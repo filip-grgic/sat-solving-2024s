@@ -1,9 +1,11 @@
+import argparse
+
 def queens(n):
     rows = horizontal(n) + vertical(n) + diagonal(n)
     with open(f"queens_{n}.cnf", "w") as f:
         f.write(f"p cnf {n*n} {len(rows)}\n")
         for row in rows:
-            f.write(" ".join(map(str, row)) + "\n")# + " 0\n")
+            f.write(" ".join(map(str, row)) + " 0\n")
 
 
 def horizontal(n):
@@ -49,4 +51,11 @@ def diagonal(n):
     return result
 
 if __name__ == "__main__":
-    queens(3)
+    parser = argparse.ArgumentParser(
+            prog='DIMACS generator',
+            description='Generates a DIMACS file for the n-queens problem'
+        )
+        
+    parser.add_argument('amount', type=int, help='the amount of queens placed on the board')
+    args = parser.parse_args()
+    queens(args.amount)
